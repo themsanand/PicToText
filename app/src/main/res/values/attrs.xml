@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BookPreview">
+        <attr name="book_image" format="reference"/>
+        <attr name="book_title" format="string"/>
+        <attr name="android:ems"/>
+    </declare-styleable>
+</resources>

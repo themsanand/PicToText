@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Audiofize</string>
+    <string name="title_activity_book">BookActivity</string>
+    <string name="default_main_name">My Books</string>
+    <string name="default_main_button">Add New Books</string>
+    <string name="alternate_main_button">Add New Pages</string>
+    <string name="title_activity_new_page">NewPageActivity</string>
+    <string name="low_storage_error">Low Storage</string>
+</resources>
