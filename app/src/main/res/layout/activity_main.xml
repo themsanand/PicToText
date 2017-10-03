@@ -19,15 +19,28 @@
         android:gravity="top"
         android:textSize="128px" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_height="60dp"
-        android:layout_width="160dp"
-        android:text="@string/default_main_button"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/title_text"
         app:layout_constraintLeft_toLeftOf="@+id/title_text"
         app:layout_constraintRight_toRightOf="@+id/title_text"
-        android:onClick="createNew" />
+        android:id="@+id/button1">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="New Title"
+            android:id="@+id/enterTitle" />
+
+        <Button
+            android:id="@+id/title_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Title"
+            android:onClick="createNew" />
+    </LinearLayout>
 
     <GridView
         android:id="@+id/gridview"

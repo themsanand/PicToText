@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import static com.example.hopef.testproject.Serializer.deserialize;
 
@@ -31,6 +30,6 @@ public class PageCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.book_preview, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.page_preview, parent, false);
     }
 }

@@ -25,9 +25,7 @@ public class BookPreviewView extends RelativeLayout {
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(service);
         layout = (RelativeLayout) li.inflate(R.layout.book_preview, this, true);
         title = (TextView) layout.findViewById(R.id.book_title);
-        img = (ImageView) layout.findViewById(R.id.book_image);
         title.setText("");
-        img.setImageResource(R.drawable.blankimage);
     }
 
     public BookPreviewView(Context context, AttributeSet attrs) {
@@ -40,9 +38,7 @@ public class BookPreviewView extends RelativeLayout {
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(service);
         layout = (RelativeLayout) li.inflate(R.layout.book_preview, this, true);
         title = (TextView) layout.findViewById(R.id.book_title);
-        img = (ImageView) layout.findViewById(R.id.book_image);
         title.setText(book_title);
-        img.setImageResource(R.drawable.blankimage);
         a.recycle();
     }
 
