@@ -44,10 +44,10 @@ public class NewPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         bookName = intent.getStringExtra("Item Title");
-        Intent takePictureIntent = new Intent(Intent.ACTION_PICK);
-        takePictureIntent.setType("image/*");
-        takePictureIntent.putExtra("Item Title", bookName);
-        startActivityForResult(takePictureIntent, RESULT_LOAD_IMAGE);
+        Intent pickPictureIntent = new Intent(Intent.ACTION_PICK);
+        pickPictureIntent.setType("image/*");
+        pickPictureIntent.putExtra("Item Title", bookName);
+        startActivityForResult(pickPictureIntent, RESULT_LOAD_IMAGE);
         /**if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
             try {

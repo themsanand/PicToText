@@ -10,22 +10,22 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BookReaderDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 8;
-    public static final String DATABASE_NAME = "BookReader.db";
-    public static final String bTableName = "BookList";
-    public static final String bColNames = "BookName";
-    public static final String pTableName = "PageList";
-    public static final String pColNames = "BookName";
-    public static final String pColForeignKeys = "BookIds";
-    public static final String pColImage = "ImageData";
-    public static final String pColText = "TextData";
-    public static final String pColSound = "SoundData";
-    public static final String bCreateQuery = "CREATE TABLE " + bTableName + "(" + bColNames + " TEXT);";
-    public static final String pCreateQuery = "CREATE TABLE " + pTableName + "(" + pColNames + " TEXT, " + pColForeignKeys + " INTEGER, " + pColImage + " BLOB);";
-    public static SQLiteDatabase db;
+    private static final int DATABASE_VERSION = 16;
+    private static final String DATABASE_NAME = "BookReader.db";
+    private static final String bTableName = "BookList";
+    private static final String bColNames = "BookName";
+    private static final String pTableName = "PageList";
+    private static final String pColNames = "BookName";
+    private static final String pColForeignKeys = "BookIds";
+    private static final String pColImage = "ImageData";
+    private static final String pColText = "TextData";
+    private static final String pColSound = "SoundData";
+    private static final String bCreateQuery = "CREATE TABLE " + bTableName + "(" + bColNames + " TEXT);";
+    private static final String pCreateQuery = "CREATE TABLE " + pTableName + "(" + pColNames + " TEXT, " + pColForeignKeys + " INTEGER, " + pColImage + " BLOB, " + pColText + " TEXT, " + pColSound + " BLOB);";
+    private static SQLiteDatabase db;
     //public static final String colBookTexts = "Books";
 
-    public BookReaderDbHelper(Context context) {
+    BookReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         db = getWritableDatabase();
     }

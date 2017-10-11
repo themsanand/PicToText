@@ -51,7 +51,6 @@ public class BookActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, long id) {
-                Log.e("Logging", "HELD");
                 return true;
             }
         });
@@ -72,21 +71,22 @@ public class BookActivity extends AppCompatActivity {
         } catch (FileNotFoundException fnfEx) {
             Log.e("Logging!", "No such file");
         }
-        try {
-            callCloudVision(ph);
-        } catch (IOException ioE) {
-        }
         BookReaderDbHelper mDBHelper = new BookReaderDbHelper(this);
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
         ContentValues insertValues = new ContentValues();
         insertValues.put("BookIds", bookKey);
         insertValues.put("ImageData", serialize(ph));
-        db.insert("PageList", null, insertValues);
+        insertValues.putNull("TextData");
+        insertValues.putNull("SoundData");
+        long page_id = db.insertOrThrow("PageList", null, insertValues);
         refresh();
     }
 
-    private void callCloudVision(final Bitmap bitmap) throws IOException {
+    private void callCloudVision(final Bitmap bitmap, final long page_id, final long bookKey) throws IOException {
         new AsyncTask<Object, Void, String>() {
+
+            String textData = "";
+
             @Override
             protected String doInBackground(Object... params) {
                 StringBuilder strBuilder = null;
@@ -101,18 +101,28 @@ public class BookActivity extends AppCompatActivity {
                         for (int i = 0; i < sATB.size(); i++) {
                             strBuilder.append(sATB.valueAt(i).getValue() + " ");
                         }
-                        //for (int i = 0; i < sATB.size(); i++) {
-                        //    Log.e("Logging", "ITERATING");
-                        //    TextBlock item = sATB.valueAt(i);
-                        //    Log.e("Logging!", item.getValue());
-                        //}
                     }
                     textRec.release();
                 } catch (Exception e) {
                 }
-                return strBuilder.toString();
+                textData = strBuilder.toString();
+                return textData;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+
+                BookReaderDbHelper mDBHelper = new BookReaderDbHelper(BookActivity.this);
+                SQLiteDatabase db = mDBHelper.getWritableDatabase();
+                Cursor dbCursor = db.query("PageList", null, null, null, null, null, null);
+                String[] columnNames = dbCursor.getColumnNames();
+                ContentValues updateValue = new ContentValues();
+                updateValue.put("TextData", textData);
+                db.update("PageList", updateValue, "rowid=" + page_id, null);
+                refresh();
             }
         }.execute();
+
     }
 
     private String getName(long bookID) {
@@ -131,12 +141,12 @@ public class BookActivity extends AppCompatActivity {
         BookReaderDbHelper mDBHelper = new BookReaderDbHelper(this);
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
         final GridView gridview = (GridView) findViewById(R.id.gridview);
-        Cursor bookCursor = db.rawQuery("SELECT rowid _id, * FROM BookList", null);
+        Cursor pageCursor = db.rawQuery("SELECT rowid _id, * FROM PageList", null);
         PageCursorAdapter adapter = (PageCursorAdapter) gridview.getAdapter();
         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD) {
-            adapter.swapCursor(bookCursor);
+            adapter.swapCursor(pageCursor);
         } else {
-            adapter.changeCursor(bookCursor);
+            adapter.changeCursor(pageCursor);
         }
         adapter.notifyDataSetChanged();
     }
