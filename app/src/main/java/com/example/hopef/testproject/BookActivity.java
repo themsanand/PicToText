@@ -60,7 +60,6 @@ public class BookActivity extends AppCompatActivity {
         Intent pickPictureIntent = new Intent(Intent.ACTION_PICK);
         pickPictureIntent.setType("image/*");
         startActivityForResult(pickPictureIntent, RESULT_LOAD_IMAGE);
-        startActivity(pickPictureIntent);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

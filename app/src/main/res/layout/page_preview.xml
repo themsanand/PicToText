@@ -9,6 +9,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal" />
 
+    <me.grantland.widget.AutofitTextView
+        android:id="@+id/book_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="6"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal" />
+
     <LinearLayout
         android:id="@+id/button_row"
         android:layout_width="match_parent"
