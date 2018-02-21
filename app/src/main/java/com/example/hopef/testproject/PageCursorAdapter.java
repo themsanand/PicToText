@@ -46,7 +46,6 @@ public class PageCursorAdapter extends CursorAdapter {
         AutofitTextView bpvvt = (AutofitTextView) view.findViewById(R.id.book_text);
         //Log.e("Logging", cursor.getString(cursor.getColumnIndexOrThrow("TextData")));
         bpvvt.setText(cursor.getString(cursor.getColumnIndexOrThrow("TextData")));
-        //bpvvt.setText("DUMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMTEXT");
     }
 
     @Override
@@ -93,36 +92,52 @@ public class PageCursorAdapter extends CursorAdapter {
 
         textButton.setOnClickListener(new View.OnClickListener() {
                                           public void onClick(View v) {
-                                              if (TextUtils.isEmpty(bookText.getText().toString())) {
-                                                  //TODO
-                                                  try {
-                                                      callCloudVision(getBitmapAt(position), getPrimaryKeyAt(position), getBookIdAt(position));
-                                                      Log.e("Logging", getTextDataAt(position));
-                                                      bookText.setText(getTextDataAt(position));
-                                                  } catch (IOException e) {
-                                                      Log.e("Logging exception", "This shouldn't be possible: " + e.toString());
-                                                  }
-                                              }
-                                              bookImage.setVisibility(View.GONE);
-                                              bookText.setVisibility(View.VISIBLE);
+                                              textClickHandler(bookText, bookImage, position);
                                           }
                                       }
         );
         View imageButton = v.findViewById(R.id.image_button);
         imageButton.setOnClickListener(new View.OnClickListener() {
                                            public void onClick(View v) {
-                                               bookImage.setVisibility(View.VISIBLE);
-                                               bookText.setVisibility(View.GONE);
+                                               imageClickHandler(bookImage, bookText);
                                            }
                                        }
         );
         return v;
     }
 
-    private void callCloudVision(final Bitmap bitmap, final long page_id, final long bookKey) throws IOException {
+    private void imageClickHandler(ImageView bookImage, AutofitTextView bookText) {
+        bookImage.setVisibility(View.VISIBLE);
+        bookText.setVisibility(View.GONE);
+    }
+
+    private void textClickHandler(AutofitTextView bookText, ImageView bookImage, int position) {
+        if (TextUtils.isEmpty(bookText.getText().toString())) {
+            try {
+                callCloudVision(position, bookText);
+            } catch (IOException ioExc) {
+                Log.e("Logging exception", "Exception in callCloudVision :  " + ioExc.toString());
+            }
+            setPageText(bookText, position);
+        }
+        bookImage.setVisibility(View.GONE);
+        bookText.setVisibility(View.VISIBLE);
+    }
+
+    private void callCloudVision(final int position, final View bpvvt) throws IOException {
         new AsyncTask<Object, Void, String>() {
 
             String textData = "";
+            Bitmap bitmap = null;
+            long page_id = -1;
+            long bookKey = -1;
+
+            @Override
+            protected void onPreExecute() {
+                bitmap = getBitmapAt(position);
+                page_id = getPrimaryKeyAt(position);
+                bookKey = getBookIdAt(position);
+            }
 
             @Override
             protected String doInBackground(Object... params) {
@@ -143,6 +158,7 @@ public class PageCursorAdapter extends CursorAdapter {
                 } catch (Exception e) {
                 }
                 textData = strBuilder.toString();
+                Log.e("Logging call cloudVis", textData);
                 return textData;
             }
 
@@ -155,9 +171,14 @@ public class PageCursorAdapter extends CursorAdapter {
                 ContentValues updateValue = new ContentValues();
                 updateValue.put("TextData", textData);
                 db.update("PageList", updateValue, "rowid=" + page_id, null);
+                setPageText(bpvvt, position);
             }
         }.execute();
 
+    }
+
+    void setPageText(View bpvvt, int position) {
+        ((AutofitTextView) bpvvt).setText(getTextDataAt(position));
     }
 
 

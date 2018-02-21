@@ -13,6 +13,7 @@
         android:id="@+id/book_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="PLACEHOLDER"
         android:maxLines="6"
         android:visibility="gone"
         android:layout_gravity="center_horizontal" />
@@ -27,19 +28,19 @@
             android:id="@+id/image_button"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:src="@drawable/hkppg222" />
+            android:src="@drawable/pngexample" />
 
         <ImageView
             android:id="@+id/text_button"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:src="@drawable/hkppg222" />
+            android:src="@drawable/placeholder2" />
 
         <ImageView
             android:id="@+id/sound_button"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:src="@drawable/hkppg222" />
+            android:src="@drawable/placeholder3" />
 
     </LinearLayout>
 
